@@ -57,11 +57,14 @@ Si ningún factor supera su umbral, el envío queda como no_disruption. Distribu
 Probabilidad de la ruta = proporción de envíos con Disruption_Occurred = 1 entre todos los envíos de esa ruta (origen–destino).
 Impacto operativo de la ruta = días de retraso × distancia × peso, donde el retraso es max(lead_time − mediana, 0). Se normaliza entre rutas para compararlas en la misma escala.
 Los niveles se asignan según el nivel alto, medio o bajo de cada dimensión (umbrales en terciles):
+
 Nivel	Criterio	Acción
+
 🔴 Critical	Alto impacto + alta probabilidad	Mitigación inmediata
 🟠 High	Alto en una dimensión	Plan de contingencia
 🟡 Medium	Medio en ambas	Monitoreo
 🟢 Low	Bajo en ambas	Aceptar y revisar periódicamente
+
 Las acciones concretas por nivel y tipo de disrupción están en la sección 7 del notebook (por ejemplo: rediseñar la red y añadir buffer de stock, reevaluar el carrier o su SLA, o diversificar geográficamente).
 
 Resultados principales
@@ -73,11 +76,17 @@ Rotterdam – Marseille	0,750	0,041
 Los Ángeles – Singapur	0,721	0,028
 Hamburgo – Rotterdam	0,708	0,039
 Rotterdam – Busan	0,686	0,047
+
 Nivel Medium: Busan – Shanghái (probabilidad 0,681).
+
 Nivel Low, pero a vigilar: Shanghái – Singapur tiene el mayor impacto normalizado del grupo (0,057), aunque su probabilidad es baja.
+
 Por tipo de disrupción, los retrasos operativos tienen el mayor impacto medio (0,52), seguidos de los geopolíticos (0,44), los fallos de transportista (0,39) y los envíos sin disrupción (0,29).
+
 El lead time es el predictor con mayor peso en el índice; su correlación con el impacto es de 0,50 (Pearson). El riesgo geopolítico tiene la correlación más alta con el impacto (0,68).
+
 Los tres predictores del índice están prácticamente no correlacionados entre sí (|r| ≤ 0,09), por lo que aportan información distinta y no duplican factores.
+
 Dashboard interactivo
 index.html es un archivo autocontenido que se abre directamente en el navegador. Incluye:
 
