@@ -49,11 +49,16 @@ Los pesos combinan juicio experto con la práctica de indicadores compuestos de 
 Cada envío se clasifica según el factor que más se desvía de su umbral crítico:
 
 Riesgo geopolítico > P90
+
 Fallo de transportista (fiabilidad < P10)
+
 Retraso operativo (lead time > P90)
+
+
 Si ningún factor supera su umbral, el envío queda como no_disruption. Distribución: no_disruption 3.671, operational_delay 497, carrier_failure 424, geopolitical 408.
 
 5. Matriz de riesgo por ruta (ISO 31000)
+   
 Probabilidad de la ruta = proporción de envíos con Disruption_Occurred = 1 entre todos los envíos de esa ruta (origen–destino).
 Impacto operativo de la ruta = días de retraso × distancia × peso, donde el retraso es max(lead_time − mediana, 0). Se normaliza entre rutas para compararlas en la misma escala.
 Los niveles se asignan según el nivel alto, medio o bajo de cada dimensión (umbrales en terciles):
@@ -61,9 +66,13 @@ Los niveles se asignan según el nivel alto, medio o bajo de cada dimensión (um
 Nivel	Criterio	Acción
 
 🔴 Critical	Alto impacto + alta probabilidad	Mitigación inmediata
+
 🟠 High	Alto en una dimensión	Plan de contingencia
+
 🟡 Medium	Medio en ambas	Monitoreo
+
 🟢 Low	Bajo en ambas	Aceptar y revisar periódicamente
+
 
 Las acciones concretas por nivel y tipo de disrupción están en la sección 7 del notebook (por ejemplo: rediseñar la red y añadir buffer de stock, reevaluar el carrier o su SLA, o diversificar geográficamente).
 
