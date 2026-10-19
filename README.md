@@ -60,15 +60,15 @@ Metodología
 1. Auditoría y limpieza
 2. Revisión de nulos, duplicados, tipos de dato y categorías únicas.
 Outliers (método de Tukey / IQR): se mantienen. En lead_time_days hay 518 valores atípicos; se interpretan como retrasos reales (disrupciones), no como errores de medición. Con umbral de 50 días, el transporte marítimo concentra la mayoría (291), seguido de ferroviario (124) y terrestre (102). El aéreo no presenta casos.
-3. Codificación y normalización
+4. Codificación y normalización
 Clima (escala ordinal de severidad): clear = 0, fog = 1, rain = 2, storm = 3, hurricane = 4.
-Normalización min-max a [0, 1] de lead_time, geopolitical_risk, carrier y clima.
+5. Normalización min-max a [0, 1] de lead_time, geopolitical_risk, carrier y clima.
 Fiabilidad del transportista invertida (1 − min-max): tras la transformación, 0 es el escenario óptimo y 1 el riesgo máximo en todas las variables.
-4. Índice de impacto compuesto (EDA)
+6. Índice de impacto compuesto (EDA) 
 impact = 0.4 · lead_time_norm + 0.3 · geo_norm + 0.2 · carrier_norm + 0.1 · weather_norm
 Los pesos combinan juicio experto con la práctica de indicadores compuestos de la OECD (2008). El lead time pesa más porque afecta directamente el nivel de servicio y los costos de almacenamiento.
-
-5. Tipo de disrupción
+7. Tipo de disrupción
+   
 Cada envío se clasifica según el factor que más se desvía de su umbral crítico:
 
 Riesgo geopolítico > P90
