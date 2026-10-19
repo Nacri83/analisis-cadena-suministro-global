@@ -8,44 +8,67 @@ Proyecto de portafolio. Los resultados ilustran el método y no deben interpreta
 
 Estructura del repositorio
 supply-chain-risk-analysis-iso31000/
+
 ├── Proyecto_logistica_Portafolio.ipynb   # Análisis completo (EDA, riesgo, matriz, dashboard)
+
 ├── global_supply_chain_risk_2026.csv     # Dataset de envíos
+
 ├── land.json                             # Geometría de tierra para el mapa mundial
+
 ├── index.html                            # Dashboard interactivo (se genera desde el notebook)
+
 ├── img/                                  # Capturas para este README
+
 └── README.md
+
 Dataset
+
 global_supply_chain_risk_2026.csv: 5.000 registros de envíos entre 2024-01-01 y 2025-12-31.
 
 Variable	Descripción
+
 Shipment_ID	Identificador del envío
+
 Date	Fecha del envío
+
 Origin_Port / Destination_Port	Puerto de origen y destino (8 y 9 valores)
+
 Transport_Mode	Modo de transporte: air, sea, road, rail
+
 Product_Category	Categoría de producto (5 valores)
+
 Distance_km	Distancia de la ruta (km)
+
 Weight_MT	Peso del envío (toneladas métricas)
+
 Fuel_Price_Index	Índice del precio del combustible
+
 Geopolitical_Risk_Score	Score de riesgo geopolítico
+
 Weather_Condition	Condición climática: clear, fog, rain, storm, hurricane
+
 Carrier_Reliability_Score	Fiabilidad del transportista (0 a 1)
+
 Lead_Time_Days	Tiempo de entrega en días
+
 Disruption_Occurred	Indicador de disrupción (0 = no, 1 = sí)
+
 Calidad de datos: sin valores nulos, sin duplicados. Las columnas categóricas se normalizaron (sin espacios y en minúsculas) y se convirtieron a tipo category.
 
 Metodología
+
 1. Auditoría y limpieza
-Revisión de nulos, duplicados, tipos de dato y categorías únicas.
+2. Revisión de nulos, duplicados, tipos de dato y categorías únicas.
 Outliers (método de Tukey / IQR): se mantienen. En lead_time_days hay 518 valores atípicos; se interpretan como retrasos reales (disrupciones), no como errores de medición. Con umbral de 50 días, el transporte marítimo concentra la mayoría (291), seguido de ferroviario (124) y terrestre (102). El aéreo no presenta casos.
-2. Codificación y normalización
+3. Codificación y normalización
 Clima (escala ordinal de severidad): clear = 0, fog = 1, rain = 2, storm = 3, hurricane = 4.
 Normalización min-max a [0, 1] de lead_time, geopolitical_risk, carrier y clima.
 Fiabilidad del transportista invertida (1 − min-max): tras la transformación, 0 es el escenario óptimo y 1 el riesgo máximo en todas las variables.
-3. Índice de impacto compuesto (EDA)
+4. Índice de impacto compuesto (EDA)
 impact = 0.4 · lead_time_norm + 0.3 · geo_norm + 0.2 · carrier_norm + 0.1 · weather_norm
 Los pesos combinan juicio experto con la práctica de indicadores compuestos de la OECD (2008). El lead time pesa más porque afecta directamente el nivel de servicio y los costos de almacenamiento.
 
-4. Tipo de disrupción
+5. Tipo de disrupción
 Cada envío se clasifica según el factor que más se desvía de su umbral crítico:
 
 Riesgo geopolítico > P90
@@ -120,10 +143,15 @@ jupyter notebook Proyecto_logistica_Portafolio.ipynb
 El notebook espera global_supply_chain_risk_2026.csv y land.json en la misma carpeta. Al ejecutar la última celda se genera index.html.
 
 Limitaciones
+
 Pesos del índice por juicio experto. Falta un análisis de sensibilidad que valide la robustez de 0,4 / 0,3 / 0,2 / 0,1.
+
 Muestras pequeñas por ruta. Con unos 70 envíos por combinación origen–destino, las probabilidades tienen mucha incertidumbre.
+
 Probabilidad como frecuencia histórica. No hay un modelo predictivo: el análisis describe lo ocurrido, no pronostica lo que ocurrirá.
+
 Clasificación por percentiles. El tipo de disrupción depende de los umbrales P90 y P10 del dataset.
+
 Próximos pasos (Fase 2)
 Regresión logística para estimar la probabilidad de disrupción a partir de las variables operativas.
 Random Forest para capturar interacciones no lineales entre factores.
